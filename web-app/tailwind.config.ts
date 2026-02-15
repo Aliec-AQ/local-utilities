@@ -9,9 +9,9 @@ module.exports = {
           dark: '#cccccc',
         },
         primary: {
-          DEFAULT: '#048b9a', // turquoise
-          light: '#00a6a0',
-          dark: '#00707f',
+          DEFAULT: '#ec9a0c', // ambre
+          light: '#ebab3c',
+          dark: '#a86e09',
         },
       },
     },
