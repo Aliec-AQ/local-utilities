@@ -11,7 +11,6 @@ import 'primeicons/primeicons.css'
 // PLUGINS
 import pwa from './plugins/PWA';
 import router from './router.js';
-import { i18n } from '@/i18n';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
@@ -20,9 +19,27 @@ piniaInstance.use(piniaPluginPersistedstate);
 
 app.use(router);
 app.use(piniaInstance);
-app.use(i18n);
 app.use(pwa);
-
 
 // Mount the app
 app.mount('#app');
+
+// Service Worker registration
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/local-utilities/service-worker.js')
+    .then((registration) => {
+      console.log('Service Worker registered');
+      
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        newWorker?.addEventListener('statechange', () => {
+          if (newWorker.state === 'activated') {
+            console.log('New service worker available');
+          }
+        });
+      });
+    })
+    .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+    });
+}
