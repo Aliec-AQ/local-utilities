@@ -2,25 +2,57 @@
 import { computed, ref } from 'vue';
 
 const selectedSize = ref<number | null>(null);
+const selectedWidth = ref<number | null>(null);
 
 const sizes = [
-  { size : 32, diameter: 10.18 },
-  { size : 33, diameter: 10.49 },
-  { size : 34, diameter: 10.79 },
-  { size : 35, diameter: 11.10 },
-  { size : 36, diameter: 11.41 },
-  { size : 37, diameter: 11.72 },
-  { size : 38, diameter: 12.02 },
-  { size : 39, diameter: 12.33 },
-  { size : 40, diameter: 12.64 },
+  { size : 41, diameter: 13.00 },
+  { size : 42, diameter: 13.40 },
+  { size : 43, diameter: 13.70 },
+  { size : 44, diameter: 14.00 },
+  { size : 45, diameter: 14.30 },
+  { size : 46, diameter: 14.60 },
+  { size : 47, diameter: 15.00 },
+  { size : 48, diameter: 15.30 },
+  { size : 49, diameter: 15.60 },
+  { size : 50, diameter: 15.90 },
+  { size : 51, diameter: 16.20 },
+  { size : 52, diameter: 16.50 },
+  { size : 53, diameter: 16.80 },
+  { size : 54, diameter: 17.20 },
+  { size : 55, diameter: 17.50 },
+  { size : 56, diameter: 17.80 },
+  { size : 57, diameter: 18.10 },
+  { size : 58, diameter: 18.40 },
+  { size : 59, diameter: 18.80 },
+  { size : 60, diameter: 19.10 },
+  { size : 61, diameter: 19.40 },
+  { size : 62, diameter: 19.70 },
+  { size : 63, diameter: 20.00 },
+  { size : 64, diameter: 20.30 },
+  { size : 65, diameter: 20.60 },
+  { size : 66, diameter: 21.00 },
+  { size : 67, diameter: 21.30 },
+  { size : 68, diameter: 21.60 },
+  { size : 69, diameter: 22.00 },
+  { size : 70, diameter: 22.30 },
+  { size : 71, diameter: 22.60 },
+  { size : 72, diameter: 22.90 },
+  { size : 73, diameter: 23.20 },
+  { size : 74, diameter: 23.50 },
+  { size : 75, diameter: 23.90 },
+  { size : 76, diameter: 24.20 },
+]
+
+const wireWidth = [
+  0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5
 ]
 
 const calculatedValues = computed(() => {
-  if (selectedSize.value === null) return null;
+  if (selectedSize.value === null || selectedWidth.value === null) return null;
   const sizeInfo = sizes.find(s => s.size === selectedSize.value);
   if (!sizeInfo) return null;
   return {
-    circumference: (Math.PI * sizeInfo.diameter).toFixed(2),
+    circumference: (Math.PI * (sizeInfo.diameter + (selectedWidth.value || 0))).toFixed(2),
     diameter: sizeInfo.diameter.toFixed(2)
   };
 });
@@ -39,14 +71,22 @@ const calculatedValues = computed(() => {
       </div>
 
       <div class="mt-10">
-        <label for="ring-size" class="block text-sm font-medium text-amber-100 mb-2">Choose your ring size (not correct data)</label>
+
+        <label for="ring-size" class="block text-sm font-medium text-amber-100 mb-2">Choose your ring size</label>
         <select id="ring-size" v-model="selectedSize" class="w-full max-w-xs bg-neutral-900 border border-amber-500 rounded p-2 text-white">
           <option value="null" disabled>Choose a size</option>
           <option v-for="size in sizes" :key="size.size" :value="size.size">{{ size.size }}</option>
         </select>
+
+        <label for="wire-width" class="block text-sm font-medium text-amber-100 mb-2">Choose your wire width</label>
+        <select id="wire-width" v-model="selectedWidth" class="w-full max-w-xs bg-neutral-900 border border-amber-500 rounded p-2 text-white">
+          <option value="null" disabled>Choose a width</option>
+          <option v-for="width in wireWidth" :key="width" :value="width">{{ width }} mm</option>
+        </select>
+
         <div v-if="calculatedValues" class="mt-6 p-4 bg-neutral-900 border border-amber-500 rounded">
           <p><strong>Diameter:</strong> {{ calculatedValues.diameter }} mm</p>
-          <p><strong>Circumference:</strong> {{ calculatedValues.circumference }} mm</p>
+          <p><strong>Wire Length:</strong> {{ calculatedValues.circumference }} mm</p>
         </div>
       </div>
     </div>
